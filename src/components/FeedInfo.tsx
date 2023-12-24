@@ -4,9 +4,18 @@ import dayjs from "dayjs";
 import { RouteTimeline } from "./RouteTimeline";
 
 import relativeTime from "dayjs/plugin/relativeTime";
+import { Card } from "./Card";
 dayjs.extend(relativeTime);
 
-export function FeedInfo({ feedData }: { feedData: FeedData }) {
+export function FeedInfo({
+  feedData,
+  startStation,
+  endStation,
+}: {
+  feedData: FeedData;
+  startStation?: string;
+  endStation?: string;
+}) {
   const firstStop = feedData?.stopTimeUpdate[0];
   const lastStop =
     feedData?.stopTimeUpdate[feedData?.stopTimeUpdate.length - 1];
@@ -24,10 +33,7 @@ export function FeedInfo({ feedData }: { feedData: FeedData }) {
 
   return (
     <>
-      <a
-        href="#"
-        className="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-5"
-      >
+      <Card>
         <p className="font-normal mb-1 text-gray-700 dark:text-gray-400">
           {feedData?.trip?.tripId} • {feedData?.trip?.scheduleRelationship} •{" "}
           {feedData?.vehicle?.label?.toLocaleUpperCase()}
@@ -53,7 +59,11 @@ export function FeedInfo({ feedData }: { feedData: FeedData }) {
 
         <br />
 
-        <RouteTimeline stopTimeUpdates={feedData?.stopTimeUpdate} />
+        <RouteTimeline
+          stopTimeUpdates={feedData?.stopTimeUpdate}
+          startStation={startStation}
+          endStation={endStation}
+        />
 
         <br />
 
@@ -63,7 +73,9 @@ export function FeedInfo({ feedData }: { feedData: FeedData }) {
             {JSON.stringify(feedData, null, 4)}
           </pre>
         </details>
-      </a>
+      </Card>
+      <br />
+      <br />
     </>
   );
 }

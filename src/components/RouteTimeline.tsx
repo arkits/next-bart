@@ -1,11 +1,14 @@
 import { StopTimeUpdate } from "@/interface";
 import { prettyPrintDate } from "@/lib/bart";
-import dayjs from "dayjs";
 
 export function RouteTimeline({
   stopTimeUpdates,
+  startStation,
+  endStation,
 }: {
   stopTimeUpdates: StopTimeUpdate[];
+  startStation?: string;
+  endStation?: string;
 }) {
   return (
     <ol className="items-center sm:flex max-w-5xl overflow-auto p-2">
@@ -13,9 +16,16 @@ export function RouteTimeline({
         return (
           <li key={stu?.stopId} className="relative mb-6 sm:mb-0">
             <div className="flex items-center">
-              <div className="z-10 flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full ring-0 ring-white dark:bg-blue-900 sm:ring-8 dark:ring-gray-900 shrink-0">
+              <div
+                className={`z-10 flex items-center justify-center w-6 h-6 rounded-full ring-0 ring-white sm:ring-8 dark:ring-gray-900 shrink-0 ${
+                  stu?.stopId.toLowerCase() == startStation?.toLowerCase() ||
+                  stu?.stopId.toLowerCase() == endStation?.toLowerCase()
+                    ? "bg-orange-600"
+                    : "bg-blue-600"
+                }`}
+              >
                 <svg
-                  className="w-2.5 h-2.5 text-blue-800 dark:text-blue-300"
+                  className="w-2.5 h-2.5 text-white "
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"

@@ -67,6 +67,21 @@ export function Feed() {
   if (isLoading || feedData.length == 0) {
     return (
       <>
+        <br />
+        <br />
+        <br />
+
+        <FilterForm
+          startStation={startStation}
+          setStartStation={setStartStation}
+          endStation={endStation}
+          setEndStation={setEndStation}
+        />
+
+        <br />
+        <br />
+        <br />
+
         <LoadingSpinner />
       </>
     );
@@ -92,7 +107,12 @@ export function Feed() {
         <br />
         <div className="max-w-fit">
           {feedData.map((fd) => (
-            <FeedInfo key={fd?.trip?.tripId} feedData={fd} />
+            <FeedInfo
+              key={fd?.trip?.tripId}
+              feedData={fd}
+              startStation={startStation}
+              endStation={endStation}
+            />
           ))}
         </div>
       </>
