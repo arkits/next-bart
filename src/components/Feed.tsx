@@ -24,7 +24,7 @@ export function Feed() {
         next: { revalidate: 60 },
       });
       let fd = await res.json();
-      console.log("parsed", fd);
+      console.log("raw", fd);
 
       setRawFeedData(fd);
 
@@ -32,7 +32,6 @@ export function Feed() {
       let filteredFd = fd.filter((fdx: FeedData) => {
         const stopsAtStart = stopsAtStation(startStation, fdx.stopTimeUpdate);
         const stopsAtEnd = stopsAtStation(endStation, fdx.stopTimeUpdate);
-
         if (stopsAtStart && stopsAtEnd) {
           if (
             dayjs(Number(stopsAtStart?.arrival?.time) * 1000).isBefore(
@@ -44,7 +43,15 @@ export function Feed() {
         }
       });
 
-      console.log("filtered", filteredFd);
+      // sort
+      filteredFd = filteredFd.sort((a: FeedData, b: FeedData) => {
+        return (
+          Number(a?.stopTimeUpdate[0]?.arrival?.time) -
+          Number(b?.stopTimeUpdate[0]?.arrival?.time)
+        );
+      });
+
+      console.log("setFeedData", filteredFd);
       setFeedData(filteredFd);
 
       setLastRefreshed(dayjs());

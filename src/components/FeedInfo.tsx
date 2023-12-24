@@ -1,11 +1,10 @@
 import { FeedData } from "@/interface";
-import {
-  bartStationIDs,
-  convertStationIdToName,
-  prettyPrintDate,
-} from "@/lib/bart";
+import { convertStationIdToName } from "@/lib/bart";
 import dayjs from "dayjs";
 import { RouteTimeline } from "./RouteTimeline";
+
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 export function FeedInfo({ feedData }: { feedData: FeedData }) {
   const firstStop = feedData?.stopTimeUpdate[0];
@@ -33,17 +32,17 @@ export function FeedInfo({ feedData }: { feedData: FeedData }) {
           {feedData?.trip?.tripId} • {feedData?.trip?.scheduleRelationship} •{" "}
           {feedData?.vehicle?.label?.toLocaleUpperCase()}
         </p>
-        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {convertStationIdToName(firstStop.stopId)}
-          {" -> "}
-          {convertStationIdToName(lastStop.stopId)}
-        </h5>
+
         {nextStop?.stopId ? (
           <>
+            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              {convertStationIdToName(nextStop?.stopId)}{" "}
+              {dayjs().to(dayjs(Number(nextStop?.arrival.time) * 1000))}
+            </h5>
             <h4>
-              Next Stop: {convertStationIdToName(nextStop?.stopId)} <br />
-              Arrival at{" "}
-              {prettyPrintDate(Number(nextStop?.arrival.time) * 1000)}
+              {convertStationIdToName(firstStop.stopId)}
+              {" -> "}
+              {convertStationIdToName(lastStop.stopId)}
             </h4>
           </>
         ) : (
