@@ -91,59 +91,37 @@ export function Feed() {
     setInterval(fetchFeedData, 5000);
   }, []);
 
-  if (isLoading || feedData.length == 0) {
-    return (
-      <>
-        <br />
-        <br />
-        <br />
+  return (
+    <>
+      <div className="flex mb-10 items-center content-center align-middle">
+        {isLoading ? <LoadingSpinner /> : <></>}
 
-        <FilterForm
-          startStation={startStation}
-          setStartStation={setStartStation}
-          endStation={endStation}
-          setEndStation={setEndStation}
-        />
-
-        <br />
-        <br />
-        <br />
-
-        <LoadingSpinner />
-      </>
-    );
-  } else {
-    return (
-      <>
-        <p className="text-white drop-shadow-lg px-5 text-center">
+        <p className="text-white drop-shadow-lg px-5 h-6 text-center">
           Last refreshed: {prettyPrintDate(lastRefreshed)} • Filtered trains{" "}
           {feedData.length}/{rawFeedData.length}
         </p>
+      </div>
 
-        <br />
-        <br />
+      <FilterForm
+        startStation={startStation}
+        setStartStation={setStartStation}
+        endStation={endStation}
+        setEndStation={setEndStation}
+      />
 
-        <FilterForm
-          startStation={startStation}
-          setStartStation={setStartStation}
-          endStation={endStation}
-          setEndStation={setEndStation}
-        />
-
-        <br />
-        <br />
-        <br />
-        <div className="max-w-fit">
-          {feedData.map((fd) => (
-            <FeedInfo
-              key={fd?.trip?.tripId}
-              feedData={fd}
-              startStation={startStation}
-              endStation={endStation}
-            />
-          ))}
-        </div>
-      </>
-    );
-  }
+      <br />
+      <br />
+      <br />
+      <div className="max-w-fit">
+        {feedData.map((fd) => (
+          <FeedInfo
+            key={fd?.trip?.tripId}
+            feedData={fd}
+            startStation={startStation}
+            endStation={endStation}
+          />
+        ))}
+      </div>
+    </>
+  );
 }
