@@ -1,6 +1,10 @@
 export function Footer() {
   return (
-    <div className="mt-10">
+    <div className="flex flex-col items-center mt-10 mb-20 px-5">
+      <p className="mb-5">
+        next-BART Displays the next BART service between 2 stations. Based of
+        the BART's GTFS realtime feeds.
+      </p>
       <a
         href="https://github.com/arkits/next-bart"
         target="_blank"

@@ -47,7 +47,7 @@ export function FeedInfo({
   };
 
   return (
-    <>
+    <div className="mb-5">
       <Card>
         <p className="font-normal mb-1 text-gray-700 dark:text-gray-400">
           {feedData?.trip?.tripId} • {feedData?.trip?.scheduleRelationship} •{" "}
@@ -82,8 +82,6 @@ export function FeedInfo({
           endStation={endStation}
         />
       </Card>
-      <br />
-      <br />
-    </>
+    </div>
   );
 }

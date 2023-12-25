@@ -11,10 +11,10 @@ export function RouteTimeline({
   endStation?: string;
 }) {
   return (
-    <ol className="items-center sm:flex max-w-5xl overflow-auto p-2">
+    <ol className="flex overflow-auto p-2">
       {stopTimeUpdates.map((stu: StopTimeUpdate) => {
         return (
-          <li key={stu?.stopId} className="relative mb-6 sm:mb-0">
+          <li key={stu?.stopId} className="relative mb-6">
             <div className="flex items-center">
               <div
                 className={`z-10 flex items-center justify-center w-6 h-6 rounded-full ring-0 ring-white sm:ring-8 dark:ring-gray-900 shrink-0 ${
@@ -40,7 +40,7 @@ export function RouteTimeline({
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {stu.stopId}
               </h3>
-              <time className="block mb-2 text-xs font-normal leading-none text-gray-400 dark:text-gray-500">
+              <time className="block mb-2 pr-5 text-xs font-normal leading-none text-gray-400 dark:text-gray-500">
                 {prettyPrintDate(Number(stu?.arrival?.time) * 1000)}
               </time>
             </div>
