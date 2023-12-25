@@ -66,8 +66,13 @@ export function convertStationIdToName(stationId: string) {
   }
 }
 
-export function prettyPrintDate(date: string | Dayjs | undefined | number) {
-  return dayjs(date).format("YYYY-MM-DD HH:mm:ssZ[Z]");
+export function prettyPrintDate(
+  date: string | Dayjs | undefined | number,
+  includeDate = false
+) {
+  return dayjs(date)
+    .format(`${includeDate ? "YYYY-MM-DD " : ""}hh:mm:ss A`)
+    .trim();
 }
 
 export function stopsAtStation(

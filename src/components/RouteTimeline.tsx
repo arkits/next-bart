@@ -25,7 +25,7 @@ export function RouteTimeline({
                 }`}
               >
                 <svg
-                  className="w-2.5 h-2.5 text-white "
+                  className="w-3.5 h-2.5 text-white "
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -40,7 +40,7 @@ export function RouteTimeline({
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {stu.stopId}
               </h3>
-              <time className="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+              <time className="block mb-2 text-xs font-normal leading-none text-gray-400 dark:text-gray-500">
                 {prettyPrintDate(Number(stu?.arrival?.time) * 1000)}
               </time>
             </div>
