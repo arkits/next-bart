@@ -1,6 +1,6 @@
 # next-BART
 
-next-BART displays the next BART available service between 2 user-defined stations. Data base of the BART's [GTFS realtime feeds](https://www.bart.gov/schedules/developers/gtfs).
+next-BART displays the next available BART service between 2 user-defined stations. Data base of the BART's [GTFS realtime feeds](https://www.bart.gov/schedules/developers/gtfs).
 
 Demo: https://next-bart.vercel.app/
 
