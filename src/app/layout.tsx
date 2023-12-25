@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Spline_Sans_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 
-const inter = Inter({ subsets: ["latin"] });
+const spline = Spline_Sans_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "next-BART",
@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={spline.className}>{children}</body>
       <Analytics />
     </html>
   );
