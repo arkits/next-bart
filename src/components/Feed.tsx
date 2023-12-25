@@ -88,7 +88,7 @@ export function Feed() {
   } else {
     return (
       <>
-        <p className="text-gray-700 dark:text-gray-400">
+        <p className="text-gray-700 dark:text-gray-400 drop-shadow-lg">
           Last refreshed: {prettyPrintDate(lastRefreshed)} • Filtered trains{" "}
           {feedData.length}/{rawFeedData.length}
         </p>
