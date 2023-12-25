@@ -98,8 +98,8 @@ export function Feed() {
   }, 5000);
 
   return (
-    <>
-      <div className="flex mb-10 items-center content-center align-middle">
+    <div className="container">
+      <div className="flex mb-10 items-center justify-center">
         {isLoading ? <LoadingSpinner /> : <></>}
 
         <p className="text-white drop-shadow-lg px-5 h-6 text-center">
@@ -108,12 +108,14 @@ export function Feed() {
         </p>
       </div>
 
-      <FilterForm
-        startStation={startStation}
-        setStartStation={setStartStation}
-        endStation={endStation}
-        setEndStation={setEndStation}
-      />
+      <div className="flex items-center justify-center">
+        <FilterForm
+          startStation={startStation}
+          setStartStation={setStartStation}
+          endStation={endStation}
+          setEndStation={setEndStation}
+        />
+      </div>
 
       {feedData.length == 0 ? (
         <div className="flex flex-col items-center content-center my-10">
@@ -131,7 +133,7 @@ export function Feed() {
           </Button>
         </div>
       ) : (
-        <div className="max-w-fit">
+        <div className="max-w-fit my-10">
           {feedData.map((fd) => (
             <FeedInfo
               key={fd?.trip?.tripId}
@@ -142,6 +144,6 @@ export function Feed() {
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 }

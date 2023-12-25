@@ -14,7 +14,7 @@ export function FilterForm({
   setEndStation: any;
 }) {
   return (
-    <div className="mb-10">
+    <div className="mb-10 max-w-fit">
       <Card>
         <div className="flex flex-col md:flex-row items-center content-center">
           <div className="mr-5">
