@@ -84,6 +84,13 @@ export function Feed() {
     fetchFeedData();
   }, [startStation, endStation]);
 
+  /**
+   * Periodically refresh feed data
+   */
+  useEffect(() => {
+    setInterval(fetchFeedData, 5000);
+  }, []);
+
   if (isLoading || feedData.length == 0) {
     return (
       <>
