@@ -8,12 +8,16 @@ import { prettyPrintDate, stopsAtStation } from "@/lib/bart";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { FilterForm } from "./FilterForm";
 import { getFromLs } from "@/lib/ls";
+import { Button } from "./Button";
+import { useInterval } from "usehooks-ts";
 
 export function Feed() {
   const [isLoading, setIsLoading] = useState(false);
   const [rawFeedData, setRawFeedData] = useState<FeedData[]>([]);
   const [feedData, setFeedData] = useState<FeedData[]>([]);
   const [lastRefreshed, setLastRefreshed] = useState<Dayjs>();
+
+  const [showUnFiltered, setShowUnFiltered] = useState(false);
 
   const [startStation, setStartStation] = useState(
     getFromLs("startStation") || "hayw"
@@ -33,43 +37,47 @@ export function Feed() {
 
       setRawFeedData(fd);
 
-      // filter
-      let filteredFd = fd.filter((fdx: FeedData) => {
-        const stopsAtStart = stopsAtStation(startStation, fdx.stopTimeUpdate);
-        const stopsAtEnd = stopsAtStation(endStation, fdx.stopTimeUpdate);
-        if (stopsAtStart && stopsAtEnd) {
-          if (
-            dayjs(Number(stopsAtStart?.arrival?.time) * 1000).isBefore(
-              dayjs(Number(stopsAtEnd?.arrival?.time) * 1000)
-            )
-          ) {
-            return fdx;
+      if (showUnFiltered) {
+        setFeedData(fd);
+      } else {
+        // filter
+        let filteredFd = fd.filter((fdx: FeedData) => {
+          const stopsAtStart = stopsAtStation(startStation, fdx.stopTimeUpdate);
+          const stopsAtEnd = stopsAtStation(endStation, fdx.stopTimeUpdate);
+          if (stopsAtStart && stopsAtEnd) {
+            if (
+              dayjs(Number(stopsAtStart?.arrival?.time) * 1000).isBefore(
+                dayjs(Number(stopsAtEnd?.arrival?.time) * 1000)
+              )
+            ) {
+              return fdx;
+            }
           }
-        }
-      });
+        });
 
-      // sort
-      filteredFd = filteredFd.sort((a: FeedData, b: FeedData) => {
-        return (
-          Number(
-            a?.stopTimeUpdate.find(
-              (stu) =>
-                stu?.stopId.toLocaleLowerCase() ==
-                startStation.toLocaleLowerCase()
-            )?.arrival?.time
-          ) -
-          Number(
-            b?.stopTimeUpdate.find(
-              (stu) =>
-                stu?.stopId.toLocaleLowerCase() ==
-                startStation.toLocaleLowerCase()
-            )?.arrival?.time
-          )
-        );
-      });
+        // sort
+        filteredFd = filteredFd.sort((a: FeedData, b: FeedData) => {
+          return (
+            Number(
+              a?.stopTimeUpdate.find(
+                (stu) =>
+                  stu?.stopId.toLocaleLowerCase() ==
+                  startStation.toLocaleLowerCase()
+              )?.arrival?.time
+            ) -
+            Number(
+              b?.stopTimeUpdate.find(
+                (stu) =>
+                  stu?.stopId.toLocaleLowerCase() ==
+                  startStation.toLocaleLowerCase()
+              )?.arrival?.time
+            )
+          );
+        });
 
-      console.log("setFeedData", filteredFd);
-      setFeedData(filteredFd);
+        console.log("setFeedData", filteredFd);
+        setFeedData(filteredFd);
+      }
 
       setLastRefreshed(dayjs());
     } catch (error) {}
@@ -80,16 +88,14 @@ export function Feed() {
   /**
    * Refresh when stations are changed
    */
-  useEffect(() => {
-    fetchFeedData();
-  }, [startStation, endStation]);
+  useEffect(() => {}, [startStation, endStation, showUnFiltered]);
 
   /**
    * Periodically refresh feed data
    */
-  useEffect(() => {
-    setInterval(fetchFeedData, 5000);
-  }, []);
+  useInterval(() => {
+    fetchFeedData();
+  }, 5000);
 
   return (
     <>
@@ -109,19 +115,33 @@ export function Feed() {
         setEndStation={setEndStation}
       />
 
-      <br />
-      <br />
-      <br />
-      <div className="max-w-fit">
-        {feedData.map((fd) => (
-          <FeedInfo
-            key={fd?.trip?.tripId}
-            feedData={fd}
-            startStation={startStation}
-            endStation={endStation}
-          />
-        ))}
-      </div>
+      {feedData.length == 0 ? (
+        <div className="flex flex-col items-center content-center my-10">
+          <p className="mb-5 text-lg">
+            None between {startStation.toLocaleUpperCase()} to{" "}
+            {endStation.toLocaleUpperCase()}
+          </p>
+
+          <Button
+            onClick={() => {
+              setShowUnFiltered(true);
+            }}
+          >
+            Show unfiltered
+          </Button>
+        </div>
+      ) : (
+        <div className="max-w-fit">
+          {feedData.map((fd) => (
+            <FeedInfo
+              key={fd?.trip?.tripId}
+              feedData={fd}
+              startStation={startStation}
+              endStation={endStation}
+            />
+          ))}
+        </div>
+      )}
     </>
   );
 }
