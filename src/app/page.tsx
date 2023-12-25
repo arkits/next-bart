@@ -1,5 +1,7 @@
 import { Feed } from "@/components/Feed";
 import { Footer } from "@/components/Footer";
+import NoSsr from "@/components/NoSsr";
+import dynamic from "next/dynamic";
 
 export default function Home() {
   return (
@@ -7,7 +9,10 @@ export default function Home() {
       <h2 className="text-4xl font-extrabold dark:text-white mb-5 drop-shadow-lg pt-10">
         next-BART
       </h2>
-      <Feed />
+      <NoSsr>
+        <Feed />
+      </NoSsr>
+
       <Footer />
     </main>
   );
