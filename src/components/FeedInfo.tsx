@@ -31,6 +31,21 @@ export function FeedInfo({
     nextStop = feedData.stopTimeUpdate[0];
   }
 
+  const startStationHeader = () => {
+    const stu = feedData?.stopTimeUpdate.find(
+      (stu) =>
+        stu?.stopId.toLocaleLowerCase() == startStation?.toLocaleLowerCase()
+    );
+
+    const arrivalTime = dayjs(Number(stu?.arrival.time) * 1000);
+
+    if (arrivalTime.isAfter(dayjs())) {
+      return `Arrives ${dayjs().to(arrivalTime)}`;
+    } else {
+      return `Departed ${dayjs().to(arrivalTime)}`;
+    }
+  };
+
   return (
     <>
       <Card>
@@ -42,12 +57,14 @@ export function FeedInfo({
         {nextStop?.stopId ? (
           <>
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {convertStationIdToName(nextStop?.stopId)}{" "}
-              {dayjs().to(dayjs(Number(nextStop?.arrival.time) * 1000))}
+              {startStationHeader()}
             </h5>
             <h4>
-              {convertStationIdToName(firstStop.stopId)}
-              {" → "}
+              {dayjs(Number(nextStop?.arrival.time) * 1000).isAfter(dayjs())
+                ? "Arriving "
+                : "Departed "}
+              {convertStationIdToName(nextStop?.stopId)}{" "}
+              {dayjs().to(dayjs(Number(nextStop?.arrival.time) * 1000))} {" → "}
               {convertStationIdToName(lastStop.stopId)}
             </h4>
           </>
@@ -64,15 +81,6 @@ export function FeedInfo({
           startStation={startStation}
           endStation={endStation}
         />
-
-        <br />
-
-        <details>
-          <summary>Feed details</summary>
-          <pre className="font-normal text-gray-700 dark:text-gray-400">
-            {JSON.stringify(feedData, null, 4)}
-          </pre>
-        </details>
       </Card>
       <br />
       <br />

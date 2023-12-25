@@ -51,8 +51,20 @@ export function Feed() {
       // sort
       filteredFd = filteredFd.sort((a: FeedData, b: FeedData) => {
         return (
-          Number(a?.stopTimeUpdate[0]?.arrival?.time) -
-          Number(b?.stopTimeUpdate[0]?.arrival?.time)
+          Number(
+            a?.stopTimeUpdate.find(
+              (stu) =>
+                stu?.stopId.toLocaleLowerCase() ==
+                startStation.toLocaleLowerCase()
+            )?.arrival?.time
+          ) -
+          Number(
+            b?.stopTimeUpdate.find(
+              (stu) =>
+                stu?.stopId.toLocaleLowerCase() ==
+                startStation.toLocaleLowerCase()
+            )?.arrival?.time
+          )
         );
       });
 
