@@ -47,7 +47,7 @@ export function FeedInfo({
             </h5>
             <h4>
               {convertStationIdToName(firstStop.stopId)}
-              {" -> "}
+              {" → "}
               {convertStationIdToName(lastStop.stopId)}
             </h4>
           </>
