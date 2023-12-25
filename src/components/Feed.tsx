@@ -29,11 +29,9 @@ export function Feed() {
   async function fetchFeedData() {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/feed", {
-        next: { revalidate: 60 },
-      });
-      let fd = await res.json();
-      console.log("raw", fd);
+      const res = await fetch("/api/feed");
+      const fd = await res.json();
+      console.log("resJson", fd);
 
       setRawFeedData(fd);
 
@@ -88,7 +86,9 @@ export function Feed() {
   /**
    * Refresh when stations are changed
    */
-  useEffect(() => {}, [startStation, endStation, showUnFiltered]);
+  useEffect(() => {
+    fetchFeedData();
+  }, [startStation, endStation, showUnFiltered]);
 
   /**
    * Periodically refresh feed data
