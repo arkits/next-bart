@@ -4,14 +4,17 @@ export function Select({
   label,
   selectedId,
   setStation,
+  id,
 }: {
   label: string;
   selectedId?: string;
   setStation: any;
+  id: string;
 }) {
   const onSet = (e: any) => {
     console.log("set station", e.target.value);
     setStation(e.target.value);
+    localStorage.setItem(id, e.target.value);
   };
 
   return (

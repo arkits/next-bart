@@ -7,6 +7,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { prettyPrintDate, stopsAtStation } from "@/lib/bart";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { FilterForm } from "./FilterForm";
+import { getFromLs } from "@/lib/ls";
 
 export function Feed() {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,10 +15,14 @@ export function Feed() {
   const [feedData, setFeedData] = useState<FeedData[]>([]);
   const [lastRefreshed, setLastRefreshed] = useState<Dayjs>();
 
-  const [startStation, setStartStation] = useState("hayw");
-  const [endStation, setEndStation] = useState("mont");
+  const [startStation, setStartStation] = useState(
+    getFromLs("startStation") || "hayw"
+  );
+  const [endStation, setEndStation] = useState(
+    getFromLs("endStation") || "mont"
+  );
 
-  async function fetchBart() {
+  async function fetchFeedData() {
     setIsLoading(true);
     try {
       const res = await fetch("/api/feed", {
@@ -60,8 +65,11 @@ export function Feed() {
     setIsLoading(false);
   }
 
+  /**
+   * Refresh when stations are changed
+   */
   useEffect(() => {
-    fetchBart();
+    fetchFeedData();
   }, [startStation, endStation]);
 
   if (isLoading || feedData.length == 0) {
