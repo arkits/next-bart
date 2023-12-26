@@ -8,6 +8,7 @@ const spline = Spline_Sans_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "next-BART",
   description: "next-BART",
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({
